@@ -1,4 +1,5 @@
--- Fix format albums.image_url
+-- Fix format albums.image_url: 550 records
+
 
 UPDATE	
 	albums 
@@ -7,4 +8,3 @@ set
 WHERE
 	square_image_url LIKE '%http%'
 	and valid > 0
-	and uuid = '58D00FACF043482C8AC02F2E48B2E52C'
