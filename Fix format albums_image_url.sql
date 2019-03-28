@@ -8,3 +8,4 @@ set
 WHERE
 	square_image_url LIKE '%http%'
 	and valid > 0
+-- 
