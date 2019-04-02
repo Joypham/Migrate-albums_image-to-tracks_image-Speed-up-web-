@@ -1,0 +1,29 @@
+-- Backup table: 
+CREATE TABLE work_v4.tracks_20190309_1
+SELECT * FROM v4.tracks ;
+-- Query update
+UPDATE tracks
+Join (
+SELECT
+    tracks.id,
+    tracks.Valid,
+    tracks.Title tracks_title,
+    tracks.Artist,
+    album_track.*,
+    albums.title albums_title,
+    albums.iTunesUrl,
+    albums.TotalTracks,
+    albums.square_image_url,
+    tracks.ImageURL,
+    CONCAT('https://aimg.vibbidi-vid.com/',albums.square_image_url) as track_image_url_fixed,
+    ROW_NUMBER () over (PARTITION BY album_track.TrackId ORDER BY album_track.AlbumPriority desc, albums.TotalTracks desc ) as `Rankovertrack` 
+FROM
+    tracks
+JOIN album_track ON album_track.TrackId = tracks.id and tracks.valid > 0 
+Join albums on albums.UUID = album_track.AlbumId and albums.Valid > 0 and albums.square_image_url is not null
+) as t1
+on t1.id = tracks.id and t1.Rankovertrack = 1
+set 
+tracks.ImageURL = t1.track_image_url_fixed,
+tracks.ext = JSON_SET(IFNULL(tracks.ext, JSON_OBJECT()),'$.album_image_albumuuid',t1.albumid)
+
