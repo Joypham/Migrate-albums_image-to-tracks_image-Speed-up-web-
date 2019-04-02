@@ -3,3 +3,6 @@
 Albums.Square_image_url is not null
 Highest album_track.albumpriority
 Total track maximum
+2. Pre_cleaning
+3. Tạo backup table
+4. Update new imageurl
